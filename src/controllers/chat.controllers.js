@@ -1,5 +1,6 @@
 const chatModel = require("../models/chat.model");
 const messageModel = require("../models/message.model");
+const jwt = require("jsonwebtoken");
 
 async function newChatController(req, res) {
   try {
@@ -42,6 +43,7 @@ async function getChatsController(req, res) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const chats = await chatModel.find({ user: decoded.id });
+
       if (!chats) {
         return res.status(404).json({ message: "no chat's found" });
       }
