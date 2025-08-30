@@ -1,0 +1,9 @@
+[build]
+builder = "NIXPACKS"
+buildCommand = "cd Backend && npm install"
+
+[start]
+cmd = "cd Backend && npm start"
+
+[env]
+NODE_ENV = "production"
