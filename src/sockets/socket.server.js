@@ -9,7 +9,7 @@ const messageModel = require("../models/message.model");
 function initSocketServer(httpServer) {
   const io = new Server(httpServer, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: "*",
       credentials: true,
     },
   });
@@ -54,7 +54,7 @@ function initSocketServer(httpServer) {
       // fetch long term memory
       let longTermMemory = await queryMemory({
         vector: userInputVector,
-        topK : 5,
+        topK: 5,
         metadata: { user: socket.user._id },
       });
 
@@ -104,17 +104,17 @@ function initSocketServer(httpServer) {
       // sending the ai responce to user
       socket.emit("ai-response", response);
 
-      // store AI response and creating vectore of  AI response  
+      // store AI response and creating vectore of  AI response
       const [responseMessage, responseVector] = await Promise.all([
-       messageModel.create({
-        chat: messagePayload.chat,
-        content: response,
-        user: socket.user._id,
-        role: "model",
-      }),
-      // create vector of AI response
-      generateVector(response)
-      ])
+        messageModel.create({
+          chat: messagePayload.chat,
+          content: response,
+          user: socket.user._id,
+          role: "model",
+        }),
+        // create vector of AI response
+        generateVector(response),
+      ]);
 
       // storing the ai responce vector into pinecon
       await createMemory({
@@ -126,7 +126,6 @@ function initSocketServer(httpServer) {
           text: response,
         },
       });
-
     });
   });
 }
