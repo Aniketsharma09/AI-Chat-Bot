@@ -44,7 +44,7 @@ async function queryMemory({ vector, topK = 5, metadata }) {
   }
 }
 
-// // Delete all memory (clear all vectors but keep index)
+// Delete all memory (clear all vectors but keep index)
 // async function deleteAllMemory() {
 //   try {
 //     const index = pc.index(indexName);
